@@ -100,16 +100,7 @@ http_archive(
         "https://github.com/bazelbuild/rules_closure/archive/cf1e44edb908e9616030cc83d085989b8e6cd6df.tar.gz",  # 2019-04-04
     ],
 )
-# TensorFlow r1.14-rc0
-#http_archive(
-#    name = "org_tensorflow",
-#    strip_prefix = "tensorflow-1.14.0-rc0",
-#    sha256 = "76404a6157a45e8d7a07e4f5690275256260130145924c2a7c73f6eda2a3de10",
-#    urls = ["https://github.com/tensorflow/tensorflow/archive/v1.14.0-rc0.zip"],
-#)
-#load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
-#tf_workspace(tf_repo_name = "org_tensorflow")
-
+# TensorFlow 
 _TENSORFLOW_GIT_COMMIT = "f482488b481a799ca07e7e2d153cf47b8e91a60c"
 _TENSORFLOW_SHA256= "8d9118c2ce186c7e1403f04b96982fe72c184060c7f7a93e30a28dca358694f0"
 http_archive(
@@ -121,7 +112,6 @@ http_archive(
     strip_prefix = "tensorflow-%s" % _TENSORFLOW_GIT_COMMIT,
     sha256 = _TENSORFLOW_SHA256,
 )
-
 load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
 tf_workspace(tf_repo_name = "org_tensorflow")
 
