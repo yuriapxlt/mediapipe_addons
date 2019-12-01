@@ -11,8 +11,7 @@ http_archive(
     sha256 = "2ef429f5d7ce7111263289644d233707dba35e39696377ebab8b0bc701f7818e",
 )
 load("@bazel_skylib//lib:versions.bzl", "versions")
-versions.check(minimum_bazel_version = "0.24.1",
-               maximum_bazel_version = "0.29.1")
+versions.check(minimum_bazel_version = "0.24.1")
 
 # ABSL cpp library.
 http_archive(
@@ -25,6 +24,12 @@ http_archive(
     ],
     sha256 = "d437920d1434c766d22e85773b899c77c672b8b4865d5dc2cd61a29fdff3cf03",
     strip_prefix = "abseil-cpp-a02f62f456f2c4a7ecf2be3104fe0c6e16fbad9a",
+)
+
+http_archive(
+    name = "rules_cc",
+    strip_prefix = "rules_cc-master",
+    urls = ["https://github.com/bazelbuild/rules_cc/archive/master.zip"],
 )
 
 # GoogleTest/GoogleMock framework. Used by most unit-tests.
@@ -96,14 +101,30 @@ http_archive(
     ],
 )
 # TensorFlow r1.14-rc0
+#http_archive(
+#    name = "org_tensorflow",
+#    strip_prefix = "tensorflow-1.14.0-rc0",
+#    sha256 = "76404a6157a45e8d7a07e4f5690275256260130145924c2a7c73f6eda2a3de10",
+#    urls = ["https://github.com/tensorflow/tensorflow/archive/v1.14.0-rc0.zip"],
+#)
+#load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
+#tf_workspace(tf_repo_name = "org_tensorflow")
+
+_TENSORFLOW_GIT_COMMIT = "f482488b481a799ca07e7e2d153cf47b8e91a60c"
+_TENSORFLOW_SHA256= "8d9118c2ce186c7e1403f04b96982fe72c184060c7f7a93e30a28dca358694f0"
 http_archive(
     name = "org_tensorflow",
-    strip_prefix = "tensorflow-1.14.0-rc0",
-    sha256 = "76404a6157a45e8d7a07e4f5690275256260130145924c2a7c73f6eda2a3de10",
-    urls = ["https://github.com/tensorflow/tensorflow/archive/v1.14.0-rc0.zip"],
+    urls = [
+      "https://mirror.bazel.build/github.com/tensorflow/tensorflow/archive/%s.tar.gz" % _TENSORFLOW_GIT_COMMIT,
+      "https://github.com/tensorflow/tensorflow/archive/%s.tar.gz" % _TENSORFLOW_GIT_COMMIT,
+    ],
+    strip_prefix = "tensorflow-%s" % _TENSORFLOW_GIT_COMMIT,
+    sha256 = _TENSORFLOW_SHA256,
 )
+
 load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
 tf_workspace(tf_repo_name = "org_tensorflow")
+
 # Please run $ sudo apt-get install libopencv-dev
 new_local_repository(
     name = "linux_opencv",
@@ -227,5 +248,5 @@ git_repository(
     name = "mediapipe",
     remote = "https://github.com/google/mediapipe.git",
     branch = "master",
- #   commit = "c6fea4c9d9f3bdf081c10387d2b42ed854199d06", #v0.63
+#    commit = "c6fea4c9d9f3bdf081c10387d2b42ed854199d06", #v0.63
 )
